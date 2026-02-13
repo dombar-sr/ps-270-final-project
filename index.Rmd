@@ -1,14 +1,18 @@
 ---
 title: "PS270 Final Project"
-author: "Your Name Here"
+author: "Samantha Dombar"
 description: "My final project"
 output:
   distill::distill_article:
     self_contained: false
 ---
 
+```{r}
+install.packages("distill", repos = "https://cloud.r-project.org")
+library(distill)
+```
 
 
 ## Project thoughts
 
-I am interested in exploring data related to...
+I am interested in exploring data related to social media and deomocracy, whether that be advertising statistics or social media and self identification.
