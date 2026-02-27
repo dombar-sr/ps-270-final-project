@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["cn_header_file.csv","cn24.zip","eFilingFormats.zip","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","weball24.txt","weball24.zip","webl24.zip"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1550,13 +1550,18 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/h6/1bd5bczn0ss3n47rcg12x6d80000gn/T//RtmpJxyfdd/downloaded_packages</code></pre>
+    /var/folders/h6/1bd5bczn0ss3n47rcg12x6d80000gn/T//Rtmpy7diYk/downloaded_packages</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/rstudio/distill'>distill</a></span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <h2 id="project-thoughts">Project thoughts</h2>
 <p>I am interested in exploring data related to social media and deomocracy, whether that be advertising statistics or social media and self identification.</p>
+<h2 id="data-set-research-question">Data Set &amp; Research Question</h2>
+<p>The research question I will be answering using regression analysis is: To what extent does exposure to negative advertisements in U.S. Congressional primary elections influence a voter’s likelihood of voting against the candidate featured in the ad? I will use data from the Federal Election Commission as well as advertising tone data from a study by the Wesleyan Research Project to help answer this question. Specifically, Wesleyan created a data set which codes political advertisements as positive, contrast, or negative in U.S. Congressional races. I plan to draw on negativity bias and it’s impact on political persuasion. I hypothesize that low or medium levels of exposure to negative advertisements will increase a voter’s likelihood of voting against the featured candidate. However, I think high levels of exposure may cause voter’s to be less likely to vote against the candidate, as they may feel pitied toward the candidate continuously backlashes, or be upset with the other candidates for campaigning crueley.</p>
+<p>The independent variable is the proportion of total advertisements in a congressional primary race that are coded as negative, measured at the district-election level using Wesleyan Media Project data; this variable varies across races and election cycles. The dependent variable is vote choice (or vote share against the targeted candidate), measured either as individual-level survey responses (1 = voted against the candidate, 0 = otherwise) or district-level vote share from official election returns compiled by the FEC. A positive and statistically significant relationship between the proportion of negative ads and vote share against the targeted candidate would support my hypothesis. Yet, a statistically significant negative relationship would disprove my hypothesis by suggesting that negative ads either have no effect or potentially backfire.</p>
+<h2 id="set-up-code">Set-up code</h2>
+<p>Do not have access to the data yet-in the process of getting it from Wesleyan researchers.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
