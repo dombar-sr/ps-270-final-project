@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["cn_header_file.csv","cn24.zip","eFilingFormats.zip","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","weball24.txt","weball24.zip","webl24.zip"]}
+  {"type":"character","attributes":{},"value":["cn_header_file.csv","cn24.zip","eFilingFormats.zip","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","weball24.txt","weball24.zip","webl24.zip"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1550,7 +1550,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/h6/1bd5bczn0ss3n47rcg12x6d80000gn/T//Rtmp2SK0wf/downloaded_packages</code></pre>
+    /var/folders/h6/1bd5bczn0ss3n47rcg12x6d80000gn/T//Rtmpkwwj1F/downloaded_packages</code></pre>
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/rstudio/distill'>distill</a></span><span class='op'>)</span></span></code></pre>
 </div>
@@ -11166,7 +11166,327 @@ The downloaded binary packages are in
 5          0          NA          0        NA                 NA
 6          0          NA          0        NA                 NA</code></pre>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="data-cleaning">Data Cleaning</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mena</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Algeria"</span>,<span class='st'>"Bahrain"</span>,<span class='st'>"Egypt"</span>,<span class='st'>"Iran"</span>,<span class='st'>"Iraq"</span>,<span class='st'>"Israel"</span>,</span>
+<span>          <span class='st'>"Jordan"</span>,<span class='st'>"Kuwait"</span>,<span class='st'>"Lebanon"</span>,<span class='st'>"Libya"</span>,<span class='st'>"Morocco"</span>,</span>
+<span>          <span class='st'>"Oman"</span>,<span class='st'>"Qatar"</span>,<span class='st'>"Saudi Arabia"</span>,<span class='st'>"Syria"</span>,<span class='st'>"Tunisia"</span>,</span>
+<span>          <span class='st'>"United Arab Emirates"</span>,<span class='st'>"Yemen"</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>vdem_clean</span> <span class='op'>&lt;-</span> <span class='va'>vdem</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>country_name</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='va'>mena</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>!=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span></span>
+<span>    <span class='va'>country_name</span>, <span class='va'>country_text_id</span>, <span class='va'>year</span>, <span class='va'>v2x_polyarchy</span>, <span class='va'>v2x_libdem</span>,<span class='va'>v2csantimv</span>,</span>
+<span>    <span class='va'>v2ellostss</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>vdem_clean</span></span></code></pre>
+</div>
+<pre><code>    country_name country_text_id year v2x_polyarchy v2x_libdem
+1          Egypt             EGY 1945         0.150      0.184
+2          Egypt             EGY 1950         0.178      0.194
+3          Egypt             EGY 1976         0.207      0.167
+4          Egypt             EGY 1979         0.202      0.162
+5          Egypt             EGY 1984         0.215      0.172
+6          Egypt             EGY 1987         0.219      0.173
+7          Egypt             EGY 1990         0.222      0.165
+8          Egypt             EGY 1995         0.214      0.161
+9          Egypt             EGY 2000         0.216      0.157
+10         Egypt             EGY 2005         0.210      0.155
+11         Egypt             EGY 2010         0.214      0.155
+12         Egypt             EGY 2011         0.206      0.124
+13         Egypt             EGY 2015         0.155      0.095
+14         Egypt             EGY 2020         0.175      0.121
+15         Yemen             YEM 1993         0.309      0.162
+16         Yemen             YEM 1997         0.279      0.132
+17         Yemen             YEM 2003         0.277      0.149
+18       Lebanon             LBN 1943         0.266      0.172
+19       Lebanon             LBN 1947         0.323      0.195
+20       Lebanon             LBN 1951         0.312      0.192
+21       Lebanon             LBN 1953         0.373      0.217
+22       Lebanon             LBN 1957         0.360      0.212
+23       Lebanon             LBN 1960         0.370      0.225
+24       Lebanon             LBN 1964         0.388      0.232
+25       Lebanon             LBN 1968         0.384      0.231
+26       Lebanon             LBN 1972         0.372      0.220
+27       Lebanon             LBN 1992         0.333      0.195
+28       Lebanon             LBN 1996         0.311      0.192
+29       Lebanon             LBN 2000         0.325      0.198
+30       Lebanon             LBN 2005         0.402      0.233
+31       Lebanon             LBN 2009         0.468      0.275
+32       Lebanon             LBN 2018         0.444      0.290
+33       Lebanon             LBN 2022         0.410      0.255
+34          Iran             IRN 1963         0.061      0.074
+35          Iran             IRN 1967         0.113      0.082
+36          Iran             IRN 1971         0.115      0.085
+37          Iran             IRN 1980         0.168      0.087
+38          Iran             IRN 1984         0.108      0.088
+39          Iran             IRN 1988         0.178      0.103
+40          Iran             IRN 1992         0.160      0.108
+41          Iran             IRN 1996         0.175      0.118
+42          Iran             IRN 2000         0.237      0.161
+43          Iran             IRN 2004         0.208      0.136
+44          Iran             IRN 2008         0.168      0.116
+45          Iran             IRN 2012         0.159      0.111
+46          Iran             IRN 2016         0.188      0.128
+47          Iran             IRN 2020         0.166      0.113
+48          Iraq             IRQ 1953         0.177      0.172
+49          Iraq             IRQ 1954         0.178      0.166
+50          Iraq             IRQ 1996         0.146      0.070
+51          Iraq             IRQ 2000         0.146      0.069
+52          Iraq             IRQ 2005         0.240      0.122
+53          Iraq             IRQ 2010         0.421      0.276
+54          Iraq             IRQ 2014         0.402      0.256
+55          Iraq             IRQ 2018         0.402      0.256
+56          Iraq             IRQ 2021         0.371      0.236
+57        Jordan             JOR 1954         0.155      0.171
+58        Jordan             JOR 1956         0.163      0.179
+59        Jordan             JOR 1993         0.236      0.202
+60        Jordan             JOR 1997         0.226      0.199
+61        Jordan             JOR 2003         0.210      0.155
+62        Jordan             JOR 2007         0.232      0.207
+63        Jordan             JOR 2013         0.256      0.222
+64        Jordan             JOR 2016         0.240      0.195
+65        Jordan             JOR 2020         0.257      0.241
+66        Jordan             JOR 2024         0.273      0.274
+67       Morocco             MAR 1963         0.154      0.123
+68       Morocco             MAR 1970         0.135      0.110
+69       Morocco             MAR 1977         0.146      0.103
+70       Morocco             MAR 1984         0.161      0.149
+71       Morocco             MAR 1993         0.191      0.185
+72       Morocco             MAR 1997         0.203      0.194
+73       Morocco             MAR 2002         0.242      0.221
+74       Morocco             MAR 2007         0.259      0.228
+75       Morocco             MAR 2011         0.262      0.234
+76       Morocco             MAR 2016         0.265      0.232
+77       Morocco             MAR 2021         0.262      0.235
+78         Syria             SYR 1947         0.214      0.150
+79         Syria             SYR 1949         0.232      0.171
+80         Syria             SYR 1953         0.174      0.111
+81         Syria             SYR 1954         0.268      0.142
+82         Syria             SYR 1961         0.095      0.069
+83         Syria             SYR 1973         0.144      0.039
+84         Syria             SYR 1977         0.144      0.039
+85         Syria             SYR 1981         0.144      0.036
+86         Syria             SYR 1986         0.143      0.038
+87         Syria             SYR 1990         0.145      0.039
+88         Syria             SYR 1994         0.145      0.038
+89         Syria             SYR 1998         0.146      0.040
+90         Syria             SYR 2003         0.151      0.051
+91         Syria             SYR 2007         0.146      0.050
+92         Syria             SYR 2012         0.145      0.032
+93         Syria             SYR 2016         0.137      0.026
+94         Syria             SYR 2020         0.139      0.033
+95         Syria             SYR 2024         0.145      0.054
+96       Tunisia             TUN 1959         0.098      0.109
+97       Tunisia             TUN 1981         0.195      0.158
+98       Tunisia             TUN 1989         0.125      0.081
+99       Tunisia             TUN 1994         0.189      0.095
+100      Tunisia             TUN 1999         0.188      0.095
+101      Tunisia             TUN 2004         0.189      0.095
+102      Tunisia             TUN 2009         0.191      0.096
+103      Tunisia             TUN 2011         0.327      0.248
+104      Tunisia             TUN 2014         0.746      0.637
+105      Tunisia             TUN 2019         0.721      0.629
+106      Algeria             DZA 1991         0.351      0.151
+107      Algeria             DZA 1997         0.325      0.152
+108      Algeria             DZA 2002         0.327      0.154
+109      Algeria             DZA 2007         0.329      0.158
+110      Algeria             DZA 2012         0.327      0.162
+111      Algeria             DZA 2017         0.307      0.155
+112      Algeria             DZA 2021         0.277      0.132
+113        Libya             LBY 2012         0.330      0.207
+114      Bahrain             BHR 2006         0.221      0.091
+115      Bahrain             BHR 2010         0.216      0.083
+116      Bahrain             BHR 2014         0.156      0.044
+117      Bahrain             BHR 2018         0.118      0.043
+118      Bahrain             BHR 2022         0.123      0.054
+119       Israel             ISR 1949         0.577      0.486
+120       Israel             ISR 1951         0.600      0.503
+121       Israel             ISR 1955         0.607      0.509
+122       Israel             ISR 1959         0.606      0.505
+123       Israel             ISR 1961         0.647      0.538
+124       Israel             ISR 1965         0.638      0.535
+125       Israel             ISR 1969         0.671      0.585
+126       Israel             ISR 1973         0.696      0.621
+127       Israel             ISR 1977         0.758      0.679
+128       Israel             ISR 1981         0.766      0.689
+129       Israel             ISR 1984         0.760      0.684
+130       Israel             ISR 1988         0.760      0.682
+131       Israel             ISR 1992         0.765      0.689
+132       Israel             ISR 1996         0.775      0.699
+133       Israel             ISR 1999         0.774      0.698
+134       Israel             ISR 2003         0.760      0.688
+135       Israel             ISR 2006         0.763      0.691
+136       Israel             ISR 2009         0.757      0.684
+137       Israel             ISR 2013         0.744      0.663
+138       Israel             ISR 2015         0.736      0.656
+139       Israel             ISR 2019         0.714      0.625
+140       Israel             ISR 2020         0.728      0.641
+141       Israel             ISR 2021         0.738      0.654
+142       Israel             ISR 2022         0.728      0.653
+    v2csantimv v2ellostss
+1        0.297      10.98
+2        1.040      10.34
+3       -0.300      14.57
+4        0.913       7.65
+5       -0.527      12.95
+6       -0.527      12.50
+7       -0.527      18.69
+8       -0.196      25.68
+9       -0.196      16.22
+10       0.028      19.82
+11       1.371      12.80
+12       1.958      24.70
+13      -0.075      11.44
+14      -1.125      16.37
+15       1.155      20.93
+16       1.709      18.06
+17       0.643      15.28
+18       0.787      20.00
+19       0.787      21.82
+20       0.787       6.49
+21       0.787       6.82
+22       1.163       7.58
+23       0.763       6.06
+24       0.763       7.07
+25       1.643       9.09
+26       1.643      11.11
+27      -0.649       6.25
+28      -0.237       6.25
+29      -0.237       7.81
+30       1.199      12.50
+31       0.671      14.84
+32       0.813      10.16
+33       0.817      14.06
+34       0.900      22.00
+35       1.786      14.16
+36       1.786      13.81
+37       0.989      31.48
+38       0.182      48.15
+39       0.182      33.33
+40      -0.548      44.44
+41      -0.548      29.63
+42      -0.548      25.52
+43      -0.548      16.32
+44      -1.033      17.59
+45      -1.020      25.86
+46      -1.673      28.62
+47      -1.221      13.10
+48       0.503      35.56
+49       0.503      37.04
+50      -0.739      33.20
+51      -0.739      25.00
+52       1.200      19.27
+53       1.542      27.38
+54       1.496      10.37
+55       0.579      14.59
+56       0.523      11.25
+57       1.413       2.50
+58       1.780      27.50
+59      -1.483      21.25
+60      -1.483       2.50
+61      -1.483      15.45
+62      -1.483       5.45
+63      -1.233       2.00
+64      -1.215       7.69
+65      -1.212       3.85
+66      -1.945      15.22
+67       1.722      28.47
+68       1.508       4.44
+69       1.508      16.48
+70       1.508      19.12
+71      -0.607      19.37
+72       0.192      15.38
+73       0.083      14.77
+74       0.083      14.15
+75       0.225      15.19
+76       0.091      25.82
+77       0.189      22.03
+78       0.852      25.98
+79       0.852      27.19
+80       0.852       1.22
+81       0.852      15.49
+82       0.096      12.21
+83      -0.993      24.73
+84       0.123      23.59
+85       1.109      23.59
+86      -1.685      17.95
+87      -1.685      33.60
+88      -1.685      33.20
+89      -1.685      33.20
+90      -0.644       0.00
+91      -0.644      31.20
+92       1.498      30.80
+93       1.103      24.80
+94       0.235      26.80
+95       0.468      26.00
+96       1.644       0.00
+97       1.732       0.00
+98       0.887       0.00
+99       0.887       6.13
+100      0.887       7.14
+101      0.887       7.41
+102      0.887       7.48
+103      1.004      13.36
+104      0.376      31.80
+105      0.376      17.51
+106      1.665       5.81
+107      2.083      18.16
+108      0.266      12.08
+109     -0.134      15.68
+110     -0.002      14.72
+111     -0.251      21.65
+112      0.524      15.97
+113      1.616      19.50
+114     -0.021      27.50
+115      0.183      42.50
+116      1.300       5.00
+117     -0.058      27.50
+118     -0.461       7.50
+119     -0.665      15.83
+120     -0.665      16.67
+121     -0.665      12.50
+122     -0.665      14.17
+123     -0.665      14.17
+124     -0.665      21.67
+125     -0.665      21.67
+126     -0.665      32.50
+127     -0.665      26.67
+128     -0.665      39.17
+129     -0.665      34.17
+130     -0.665      32.50
+131     -0.665      26.67
+132     -0.665      26.67
+133     -0.665      15.83
+134     -0.665      15.83
+135     -0.665      15.83
+136     -0.665      22.50
+137     -0.665      15.83
+138     -0.665      20.00
+139     -0.714      29.17
+140     -0.637      27.50
+141     -0.522      14.17
+142     -0.447      20.00</code></pre>
+</div>
+<h2 id="graphing">Graphing</h2>
+<p>The graph below shows the distribution of anti government movements in Middle Eastern and North African Countries in the dataset.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></span><span class='op'>(</span><span class='va'>v2csantimv</span> <span class='op'>~</span> <span class='va'>country_name</span>,</span>
+<span>        data <span class='op'>=</span> <span class='va'>vdem_clean</span>,</span>
+<span>        las <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span>        main <span class='op'>=</span> <span class='st'>"Distribution of Anti-Government Movements by MENA Country"</span>,</span>
+<span>        xlab<span class='op'>=</span> <span class='st'>"Country Name"</span>,</span>
+<span>        ylab <span class='op'>=</span> <span class='st'>"Anti-Government Movements"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
+</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
