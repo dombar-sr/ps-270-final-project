@@ -20,12 +20,17 @@ I am interested in exploring data related to social media and deomocracy, whethe
 
 ## Data Set & Research Question
 
-The research question I will be answering using regression analysis is: To what extent does exposure to negative advertisements in U.S. Congressional primary elections influence a voter’s likelihood of voting against the candidate featured in the ad? I will use data from the Federal Election Commission as well as advertising tone data from a study by the Wesleyan Research Project to help answer this question. Specifically, Wesleyan created a data set which codes political advertisements as positive, contrast, or negative in U.S. Congressional races. I plan to draw on negativity bias and it's impact on political persuasion. I hypothesize that low or medium levels of exposure to negative advertisements will increase a voter's likelihood of voting against the featured candidate. However, I think high levels of exposure may cause voter's to be less likely to vote against the candidate, as they may feel pitied toward the candidate continuously backlashes, or be upset with the other candidates for campaigning crueley.
+The research question I will be answering using regression analysis is: Do wartime protests in democratic Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?
 
-The independent variable is the proportion of total advertisements in a congressional primary race that are coded as negative, measured at the district-election level using Wesleyan Media Project data; this variable varies across races and election cycles. The dependent variable is vote choice (or vote share against the targeted candidate), measured either as individual-level survey responses (1 = voted against the candidate, 0 = otherwise) or district-level vote share from official election returns compiled by the FEC. A positive and statistically significant relationship between the proportion of negative ads and vote share against the targeted candidate would support my hypothesis. Yet, a statistically significant negative relationship would disprove my hypothesis by suggesting that negative ads either have no effect or potentially backfire.
+Using data from the Varieties of Democracy Project (V-DEM), I will examine how protest mobilization relates to political outcomes in the Middle East and North Africa (MENA) region. Specifically, I will draw on V-DEM’s regional classification variable identifying countries in the MENA region (Region #3) and the dataset’s protest mobilization indicator, which captures the extent to which citizens engage in organized demonstrations or collective action against political actors. The independent variable will be the level of protest mobilization within a country-year, as measured by the V-DEM protest mobilization variable. The dependent variable will be the political response to this mobilization, such as shifts in electoral outcomes, government support, or opposition strength within the region. I hypothesize that moderate levels of protest mobilization will increase the likelihood that citizens oppose incumbent leaders or ruling parties, as protests may signal dissatisfaction and mobilize broader political participation. However, extremely high levels of protest activity may produce the opposite effect if citizens become discouraged by instability, fear repression, or rally behind incumbents in response to perceived disorder. A positive and statistically significant relationship between protest mobilization and opposition support would support my hypothesis. Conversely, a statistically significant negative relationship would suggest that protest activity either fails to translate into opposition gains or may even strengthen incumbent support under certain conditions.
+
 
 ## Set-up code
 
-Do not have access to the data yet-in the process of getting it from Wesleyan researchers.
-
+```{r}
+devtools::install_github("vdeminstitute/vdemdata")
+library(vdemdata)
+vdem <- vdemdata::vdem
+head(vdem)
+```
 
