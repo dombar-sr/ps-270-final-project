@@ -68,5 +68,5 @@ boxplot(v2csantimv ~ country_name,
         xlab= "",
         ylab = "Anti-Government Movements")
 
-mtext("Country Name", side = 1, line = 5)
+mtext("Country Name", side = 1, line = 7)
 ```
