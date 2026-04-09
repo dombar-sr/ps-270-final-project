@@ -110,7 +110,7 @@ geom_point(color = "steelblue1", alpha = 0.5) +
 labs(
 x = "Anti-Government Movements in MENA Countries",
 y = "Incumbent Seats Losts",
-title = str_wrap("Do anti government protests in Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?")
+title = str_wrap("Do anti government protests \n in Middle Eastern or North African Countries \n cause citizens to vote out incumbent leaders?")
 ) 
 
 agm_incumbvote_regression
