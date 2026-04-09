@@ -1,7 +1,7 @@
 ---
 title: "PS270 Final Project"
 author: "Samantha Dombar"
-description: "My final project"
+description: "Anti-Government Movements & Incumbency Vote Share"
 output:
   distill::distill_article:
     self_contained: false
@@ -19,9 +19,9 @@ I am interested in exploring data related to social media and deomocracy, whethe
 
 ## Data Set & Research Question
 
-The research question I will be answering using regression analysis is: Do wartime protests in democratic Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?
+The research question I will be answering using regression analysis is: Do anti government protests in Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?
 
-Using data from the Varieties of Democracy Project (V-DEM), I will examine how protest mobilization relates to political outcomes in the Middle East and North Africa (MENA) region. Specifically, I will draw on V-DEM’s regional classification variable identifying countries in the MENA region (Region #3) and the dataset’s protest mobilization indicator, which captures the extent to which citizens engage in organized demonstrations or collective action against political actors. The independent variable will be the level of protest mobilization within a country-year, as measured by the V-DEM protest mobilization variable. The dependent variable will be the political response to this mobilization, such as shifts in electoral outcomes, government support, or opposition strength within the region. I hypothesize that moderate levels of protest mobilization will increase the likelihood that citizens oppose incumbent leaders or ruling parties, as protests may signal dissatisfaction and mobilize broader political participation. However, extremely high levels of protest activity may produce the opposite effect if citizens become discouraged by instability, fear repression, or rally behind incumbents in response to perceived disorder. A positive and statistically significant relationship between protest mobilization and opposition support would support my hypothesis. Conversely, a statistically significant negative relationship would suggest that protest activity either fails to translate into opposition gains or may even strengthen incumbent support under certain conditions.
+Using data from the Varieties of Democracy Project (V-DEM), I will examine how protest mobilization relates to political outcomes in the Middle East and North Africa (MENA) region. Specifically, I will draw on V-DEM’s regional classification variable identifying countries in the MENA region (Region #3) and the dataset’s protest mobilization indicator, which captures the extent to which citizens engage in organized demonstrations or collective action against political actors. The independent variable will be the level of anti-government protests within a country-year, as measured by the V-DEM protest mobilization variable. The dependent variable will be the political response to this mobilization, such as shifts in electoral outcomes, government support, or opposition strength within the region. I hypothesize that moderate levels of protest mobilization will increase the likelihood that citizens oppose incumbent leaders or ruling parties, as protests may signal dissatisfaction and mobilize broader political participation. However, extremely high levels of protest activity may produce the opposite effect if citizens become discouraged by instability, fear repression, or rally behind incumbents in response to perceived disorder. A positive and statistically significant relationship between protest mobilization and opposition support would support my hypothesis. Conversely, a statistically significant negative relationship would suggest that protest activity either fails to translate into opposition gains or may even strengthen incumbent support under certain conditions.
 
 
 ## Set-up code
@@ -30,7 +30,6 @@ Using data from the Varieties of Democracy Project (V-DEM), I will examine how p
 devtools::install_github("vdeminstitute/vdemdata")
 library(vdemdata)
 vdem <- vdemdata::vdem
-head(vdem)
 ```
 ## Data Cleaning
 
@@ -43,7 +42,7 @@ mena <- c("Algeria","Bahrain","Egypt","Iran","Iraq","Israel",
 ```
 
 ```{r}
-library(dplyr)
+library(tidyverse)
 
 vdem_clean <- vdem |>
   filter(country_name %in% mena) |>
@@ -51,22 +50,80 @@ vdem_clean <- vdem |>
   select(
     country_name, country_text_id, year, v2x_polyarchy, v2x_libdem, v2csantimv,
     v2ellostss)
-vdem_clean
 ```
 
 ## Graphing
 
 The graph below shows the distribution of anti government movements in Middle Eastern and North African Countries in the dataset.
 
+The y-axis (anti government) scale is as follows: 
+
+- 0 represents the "average" or "baseline" amount of anti-system movement activity across the entire global dataset.
+- Positive numbers mean the country has more anti-system activity than the global historical average.
+- Negative numbers mean the country has less anti-system activity than the global historical average.
+
 ```{r}
-par(mar = c(8, 4, 4, 2)) 
+par(mar = c(10, 6, 4, 2)) 
 
 boxplot(v2csantimv ~ country_name,
         data = vdem_clean,
         las = 2,
-        main = "Distribution of Anti-Government Movements by MENA Country",
+        main = "Distribution of Anti-Government Movements \n by MENA Country (1943-2025)",
         xlab= "",
-        ylab = "Anti-Government Movements")
+        ylab = "Anti-Government Movements \n (compared to global historical average)")
 
-mtext("Country Name", side = 1, line = 7)
+mtext("Country Name", side = 1, line = 5)
+
 ```
+
+The graph below shows the distribution of incumbent seats lost in each Middle Eastern and North African Countries in the dataset.
+
+```{r}
+par(mar = c(8, 10, 4, 2)) 
+
+boxplot(v2ellostss ~ country_name,
+        data = vdem_clean,
+        las = 2,
+        main = "Distribution of Incumbent Seats \n Lost by MENA Country (1943-2025)",
+        xlab= "",
+        ylab = "Incumbent Seats Lost in Lower \n Legislative House/Parliament") 
+
+mtext("Country Name", side = 1, line = 5)
+
+```
+
+## Regression
+
+Below is a regression to show the correlation between anti-government movements and citizens voting out incumbent leaders.
+
+```{r}
+fit <- lm(v2ellostss ~ v2csantimv, data = vdem_clean)
+fit
+```
+### Visualizing the regression:
+
+```{r}
+agm_incumbvote_regression <- 
+  ggplot(vdem_clean, aes(x = v2csantimv, y = v2ellostss)) +
+geom_point(color = "steelblue1", alpha = 0.5) +
+  geom_smooth(method = "lm") +
+labs(
+x = "Anti-Government Movements in MENA Countries",
+y = "Incumbent Seats Losts",
+title = str_wrap("Do anti government protests in Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?")
+) 
+
+agm_incumbvote_regression
+```
+
+## Regression Analysis
+
+This scatter plot examines the relationship between Anti-Government Movements (x-axis) and Incumbent Seats Lost (y-axis) across MENA countries. Here is my findings and their implications for my research on anti government movements and electoral accountability.
+
+The visualization reveals a high degree of variance. There is a "Zero" Concentration, or a heavy cluster of data points exists around the center of the x-axis. This suggests that for most observations, anti-government movement activity remains close to a baseline level, even while seat losses fluctuate wildly from 0 to 50. The vertical spread of "Seats Lost" appears to change across different levels of movement intensity. This suggests that "Anti-Government Movements" are an inconsistent predictor of electoral outcomes when analyzed in isolation.
+
+In a country with a baseline level of anti-government movements, the model predicts that the incumbents will lose approximately 18.4% of the seats. This provides a "baseline." For every 1-unit increase in prevelance of anti-government movements, the seat share of incumbents is predicted to decrease by 2.168%. This is a small negative correlation. As a country's citizens participate in more anti-government movements, incumbents appear to capture less of the total seat share according to this specific data slice.
+
+There are several blue "ghost" points in the upper-left and upper-middle quadrants (high seat loss with low-to-moderate protest). These represent instances where incumbents were severely punished at the polls without significant pre-election protest.
+
+Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. The relationship is likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.
