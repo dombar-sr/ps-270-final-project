@@ -52,7 +52,13 @@ vdem_clean <- vdem |>
     v2ellostss)
 ```
 
-## Graphing
+# Experiment
+
+Because I am looking at several countries from 1943-2025, I will complete a cross-sectional design.
+
+## Visualizing the Data
+
+The dependent variable, anti-government protests, is an expert-coded variables. Protest intensity is not something that can be measured through a single survey; instead it relies on human judgement. The independent variable, incumbent seats lost, is an observational variable.
 
 The graph below shows the distribution of anti government movements in Middle Eastern and North African Countries in the dataset.
 
@@ -127,3 +133,7 @@ In a country with a baseline level of anti-government movements, the model predi
 There are several blue "ghost" points in the upper-left and upper-middle quadrants (high seat loss with low-to-moderate protest). These represent instances where incumbents were severely punished at the polls without significant pre-election protest.
 
 Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. The relationship is likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.
+
+## Conclusion
+
+The findings of this analysis provide only mixed and weak support for the initial hypothesis. While the regression model indicates a small negative correlation—predicting a $2.17\%$ decrease in incumbent seat share for every unit increase in anti-government movement intensity—the high degree of variance and the heavy clustering of data points around the baseline suggest that protests are an inconsistent predictor of electoral turnover in the MENA region. Furthermore, the negative coefficient paradoxically suggests that higher protest levels might correlate with fewer seats lost, contradicting the expectation that mobilization would facilitate incumbent removal. These results are subject to several significant threats to inference, most notably confounding variables such as regime type; in autocracies, protests may be met with repression rather than electoral accountability, "muddying" the causal link. Additionally, missing data is a concern, as elections in the MENA region are infrequent and V-Dem’s expert-coded protest measures are subject to subjective latent estimation. If granted more time and resources, I would improve this analysis by implementing a distributed lag model to ensure the protests precede the elections temporally, and I would add interaction terms for "Regime Type" to determine if the effect of protests only becomes statistically significant in more democratic "hybrid" regimes versus absolute monarchies.
