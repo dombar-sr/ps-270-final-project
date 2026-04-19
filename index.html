@@ -1544,22 +1544,17 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span>, repos <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org"</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>
-The downloaded binary packages are in
-    /var/folders/h6/1bd5bczn0ss3n47rcg12x6d80000gn/T//Rtmp7LXWhA/downloaded_packages</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/rstudio/distill'>distill</a></span><span class='op'>)</span></span></code></pre>
-</div>
-</div>
 <h2 id="project-thoughts">Project thoughts</h2>
-<p>I am interested in exploring data related to protests or other forms of civic engagement and their electoral impacts.</p>
+<p>I am interested in exploring data related to protests or other forms of civic engagement and their electoral impacts. It would be interesting to see whether people’s anger at politicians is channeled into both activism and electoral action or is more of a symbolic move. I would like to observe Middle Eastern countries because this region has a history of oppressive regimes and protests regarding them.</p>
 <h2 id="data-set-research-question">Data Set &amp; Research Question</h2>
-<p>The research question I will be answering using regression analysis is: Do anti government protests in Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?</p>
-<p>Using data from the Varieties of Democracy Project (V-DEM), I will examine how protest mobilization relates to political outcomes in the Middle East and North Africa (MENA) region. Specifically, I will draw on V-DEM’s regional classification variable identifying countries in the MENA region (Region #3) and the dataset’s protest mobilization indicator, which captures the extent to which citizens engage in organized demonstrations or collective action against political actors. The independent variable will be the level of anti-government protests within a country-year, as measured by the V-DEM protest mobilization variable. The dependent variable will be the political response to this mobilization, such as shifts in electoral outcomes, government support, or opposition strength within the region. I hypothesize that moderate levels of protest mobilization will increase the likelihood that citizens oppose incumbent leaders or ruling parties, as protests may signal dissatisfaction and mobilize broader political participation. However, extremely high levels of protest activity may produce the opposite effect if citizens become discouraged by instability, fear repression, or rally behind incumbents in response to perceived disorder. A positive and statistically significant relationship between protest mobilization and opposition support would support my hypothesis. Conversely, a statistically significant negative relationship would suggest that protest activity either fails to translate into opposition gains or may even strengthen incumbent support under certain conditions.</p>
+<p>The research question I will be answering using regression analysis is: Do anti-government protests in Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?</p>
+<p>Using data from the Varieties of Democracy Project (V-DEM), I will examine how protest mobilization relates to political outcomes in the Middle East and North Africa (MENA) region. Specifically, I will draw on V-DEM’s country classification variable (country_name) identifying countries in the MENA region (Region #3) and the dataset’s protest mobilization indicator (v2santimv), which captures the extent to which citizens engage in organized demonstrations or collective action against political actors. The independent variable will be the level of anti-government protests within a country-year, as measured by v2santimv. The dependent variable will be the political response to this mobilization, such as shifts in electoral outcomes seen in if incumbent leaders lose seats in the electoral body (v2ellostss). I will use incumbent seats lost as a measure of electoral impact because incumbents are the leaders who held office when anti-government protests occurred and were being protested.</p>
+<p>I hypothesize that moderate levels of protest mobilization will increase the likelihood that citizens oppose incumbent leaders or ruling parties, as protests may signal dissatisfaction and mobilize broader political participation. However, extremely high levels of protest activity may produce the opposite effect if citizens become discouraged by instability, fear repression, or rally behind incumbents in response to perceived disorder. A positive and statistically significant relationship between protest mobilization and opposition support would support my hypothesis. Conversely, a statistically significant negative relationship would suggest that protest activity either fails to translate into opposition gains or may even strengthen incumbent support under certain conditions.</p>
+<ul>
+<li><strong>Null hypothesis / HO: Anti-government protests do not impact voter behavior, and thus the number of incumbent seats lost in the following election</strong></li>
+<li><strong>Alternative hypothesis / Ha: Anti-government protests do impact voter behavior and result in a loss of incumbent seats in the following election</strong></li>
+</ul>
+<p>I will reject the null hypothesis if the p value is less than 0.05. I will fail to reject the null hypothesis if the p value is greater than 0.05.</p>
 <h2 id="set-up-code">Set-up code</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1569,6 +1564,7 @@ The downloaded binary packages are in
 </div>
 </div>
 <h2 id="data-cleaning">Data Cleaning</h2>
+<p>I am creating the mena variable to hold all the nations that fall under this region.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mena</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Algeria"</span>,<span class='st'>"Bahrain"</span>,<span class='st'>"Egypt"</span>,<span class='st'>"Iran"</span>,<span class='st'>"Iraq"</span>,<span class='st'>"Israel"</span>,</span>
@@ -1577,6 +1573,7 @@ The downloaded binary packages are in
 <span>          <span class='st'>"United Arab Emirates"</span>,<span class='st'>"Yemen"</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
+<p>Here I am cleaning the data to only include variables of interest. I included freedom of expression because I think it is interesting to see whether a nation censors protest activity, and if so to what degree (0 = heavily censored, 1 = freedom of expression). I also included the free and fair election variable to highlight the outside factors that may influence election results in a particular nation (0 = fradulent elections, 1 = credible elections).</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1585,20 +1582,20 @@ The downloaded binary packages are in
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>country_name</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='va'>mena</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>!=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span></span>
-<span>    <span class='va'>country_name</span>, <span class='va'>country_text_id</span>, <span class='va'>year</span>, <span class='va'>v2x_polyarchy</span>, <span class='va'>v2x_libdem</span>, <span class='va'>v2csantimv</span>,</span>
-<span>    <span class='va'>v2ellostss</span><span class='op'>)</span></span></code></pre>
+<span>    <span class='va'>country_name</span>, <span class='va'>country_text_id</span>, <span class='va'>year</span>, <span class='va'>v2x_freexp_altinf</span>, <span class='va'>v2csantimv</span>, <span class='va'>v2elfrfair</span>, <span class='va'>v2ellostss</span>,<span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<h1 id="experiment">Experiment</h1>
-<p>Because I am looking at several countries from 1943-2025, I will complete a cross-sectional design.</p>
+<h1 id="study">Study</h1>
+<p><strong>Because I am looking at several countries from 1943-2025, I will complete a cross-sectional design.</strong></p>
 <h2 id="visualizing-the-data">Visualizing the Data</h2>
-<p>The dependent variable, anti-government protests, is an expert-coded variables. Protest intensity is not something that can be measured through a single survey; instead it relies on human judgement. The independent variable, incumbent seats lost, is an observational variable.</p>
-<p>The graph below shows the distribution of anti government movements in Middle Eastern and North African Countries in the dataset.</p>
+<p>The dependent variable, anti-government protests, is an expert-coded variable. Protest intensity is not something that can be measured through a single survey, instead it relies on human judgement. The independent variable, incumbent seats lost, is an observational variable.</p>
+<h3 id="dependent-variable-graph">Dependent variable graph</h3>
+<p>The graph below shows the distribution of anti government movements in Middle Eastern and North African Countries in the data set.</p>
 <p>The y-axis (anti government) scale is as follows:</p>
 <ul>
-<li>0 represents the “average” or “baseline” amount of anti-system movement activity across the entire global dataset.</li>
-<li>Positive numbers mean the country has more anti-system activity than the global historical average.</li>
-<li>Negative numbers mean the country has less anti-system activity than the global historical average.</li>
+<li><strong>0 represents the “average” or “baseline” amount of anti-system movement activity across the entire global dataset.</strong></li>
+<li><strong>Positive numbers mean the country has more anti-system activity than the global historical average.</strong></li>
+<li><strong>Negative numbers mean the country has less anti-system activity than the global historical average.</strong></li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1615,6 +1612,7 @@ The downloaded binary packages are in
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
 </div>
+<h3 id="independent-variable-graph">Independent variable graph</h3>
 <p>The graph below shows the distribution of incumbent seats lost in each Middle Eastern and North African Countries in the dataset.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1632,7 +1630,7 @@ The downloaded binary packages are in
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" alt="" width="624" /></p>
 </div>
-<h2 id="regression">Regression</h2>
+<h2 id="results">Results</h2>
 <p>Below is a regression to show the correlation between anti-government movements and citizens voting out incumbent leaders.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1640,16 +1638,18 @@ The downloaded binary packages are in
 <span></span>
 <span><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>~</span> <span class='va'>v2csantimv</span>, data <span class='op'>=</span> <span class='va'>vdem_clean</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>, digits <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span></code></pre>
+<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>, </span>
+<span>             digits <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span>             col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Variable"</span>, <span class='st'>"Coefficient"</span>, <span class='st'>"Std. Error"</span>, <span class='st'>"Stat. value"</span>, <span class='st'>"P value"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">Stat. value</th>
+<th style="text-align: right;">P value</th>
 </tr>
 </thead>
 <tbody>
@@ -1670,7 +1670,7 @@ The downloaded binary packages are in
 </tbody>
 </table>
 </div>
-<h3 id="visualizing-the-regression">Visualizing the regression:</h3>
+<h3 id="visualizing-the-regression">Visualizing the regression</h3>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>agm_incumbvote_regression</span> <span class='op'>&lt;-</span> </span>
@@ -1687,17 +1687,17 @@ The downloaded binary packages are in
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-8-1.png" alt="" width="624" /></p>
 </div>
-<h2 id="regression-analysis">Regression Analysis</h2>
-<p>This scatter plot above examines the relationship between Anti-Government Movements (x-axis) and Incumbent Seats Lost (y-axis) across MENA countries. Here is my findings and their implications for my research on anti government movements and electoral accountability.</p>
-<p>The visualization reveals a high degree of variance. There is a heavy cluster of data points exists around the center of the x-axis. This suggests that for most observations, anti-government movement activity remains close to a baseline level, even while seat losses fluctuate wildly from 0 to 50. The vertical spread of “Seats Lost” appears to change across different levels of movement intensity. This suggests that “Anti-Government Movements” are an inconsistent predictor of electoral outcomes when analyzed in isolation.</p>
-<p>In a country with a baseline level of anti-government movements, the model predicts that the incumbents will lose approximately 18.4% of the seats. This provides a “baseline.” For every 1-unit increase in prevelance of anti-government movements, the seat loss of incumbents is predicted to decrease by 2.168%. This is a small negative correlation. As a country’s citizens participate in more anti-government movements, incumbents appear to capture more of the total seat share (i.e. losing less seats).</p>
+<h3 id="regression-analysis">Regression Analysis</h3>
+<p>The scatter plot above examines the relationship between Anti-Government Movements (x-axis) and Incumbent Seats Lost (y-axis) across MENA countries. Here are my findings and their implications for my research on anti government movements and electoral accountability.</p>
+<p>The visualization reveals a high degree of variance. There is a heavy cluster of data points around the center of the x-axis. This suggests that for most observations, anti-government movement activity remains close to a baseline level, even while incumbent seat losses fluctuate wildly from 0 to 50. The vertical spread of seat loss appears to change across different levels of movement intensity. This suggests that anti-government movements are an inconsistent predictor of electoral outcomes when analyzed in isolation.</p>
 <p>There are several blue “ghost” points in the upper-left and upper-middle quadrants (high seat loss with low-to-moderate protest). These represent instances where incumbents were severely punished at the polls without significant pre-election protest.</p>
-<p>Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. The relationship is likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.</p>
+<p>In a country with a baseline level of anti-government movements, the model predicts that the incumbents will lose approximately 18.4% of the seats. This provides a “baseline.” For every 1-unit increase in prevalence of anti-government movements, the seat loss of incumbents is predicted to decrease by 2.17%. This is a small negative correlation. As a country’s citizens participate in more anti-government movements, incumbents appear to capture more of the total seat share (i.e. losing less seats). The coefficient is statistically significant at the 1% level. Moreover, I reject the null hypothesis that anti-government protests do not impact voter behavior or the number of incumbent seats lost.</p>
+<p>Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. I can not assume a causal effect between anti-government protests and incumbent seats lost in the following election because there are several confounders that could influence both anti-government protests and incumbent seat lost. For example, if a country has a corrupt electoral system (v2elfrfair), citizens may protests in hopes for stronger representation. Yet, this electoral corruption could also be a cause for incumbents keeping their seats, unrelated to the fact that it’s being protested. Additionally, freedom of information/open media channels (v2x_freexp_altinf) could give citizens a more accurate understanding of what is going on in their government, necessitating anti-government protests. Access to accurate information could also allow for more fair elections and potential incumbent security. The relationship is also likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>The findings of this analysis provide weak support for the initial hypothesis. While the regression model indicates a small negative correlation—predicting a 2.17% decrease in incumbent seats lost for every unit increase in anti-government movement intensity, the high degree of variance and the heavy clustering of data points around the baseline suggest that protests are an inconsistent predictor of electoral turnover in the MENA region.</p>
-<p>Furthermore, the negative coefficient suggests that higher protest levels might correlate with fewer seats lost, contradicting the expectation that mobilization would facilitate incumbent removal. However, low levels of incumbent seat loss when there are high levels of anti-government protest is in line with my initial prediction that higher levels of protest may cause societal anxiety and a need for stability and familiarity, thus resulting in voters reelecting incumbents.</p>
-<p>These results are subject to several significant threats to inference, most notably confounding variables such as regime type. In autocracies, protests may be met with repression rather than electoral accountability, weakening the causal link. Additionally, missing data is a concern, as elections in the MENA region are infrequent and V-Dem’s expert-coded protest measures are subject to subjective latent estimation. If granted more time and resources, I would improve this analysis by implementing a distributed lag model to ensure the protests precede the elections, and I would add interaction terms for “Regime Type” to determine if the effect of protests only becomes statistically significant in more democratic regimes versus monarchies.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>Furthermore, the negative coefficient suggests that higher protest levels might correlate with fewer seats lost, contradicting the expectation that mobilization would facilitate incumbent removal. However, the low levels of incumbent seat loss when there are high levels of anti-government protest is in line with my initial prediction that higher levels of protest may cause societal anxiety and a need for stability and familiarity, thus resulting in voters reelecting incumbents.</p>
+<p>These results are subject to several significant threats to inference, most notably confounding variables such as electoral corruption and media censorship. Additionally, missing data is a concern, as elections in the MENA region are infrequent and V-Dem’s expert-coded protest measures are subject to subjective estimation. If granted more time and resources, I would improve this analysis by implementing a distributed lag model to ensure the protests precede the elections, and I would add interaction terms for “Regime Type” to determine if the effect of protests only becomes statistically significant in more democratic regimes versus monarchies.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
