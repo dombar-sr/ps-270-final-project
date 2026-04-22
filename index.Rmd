@@ -36,7 +36,7 @@ I will reject the null hypothesis if the p value is less than 0.05. I will fail 
 
 ## Set-up code
 
-```{r}
+```{r, include = FALSE}
 devtools::install_github("vdeminstitute/vdemdata")
 library(vdemdata)
 vdem <- vdemdata::vdem
@@ -46,7 +46,7 @@ vdem <- vdemdata::vdem
 
 I am creating the mena variable to hold all the nations that fall under this region.
 
-```{r}
+```{r, include = FALSE}
 mena <- c("Algeria","Bahrain","Egypt","Iran","Iraq","Israel",
           "Jordan","Kuwait","Lebanon","Libya","Morocco",
           "Oman","Qatar","Saudi Arabia","Syria","Tunisia",
@@ -57,7 +57,7 @@ mena <- c("Algeria","Bahrain","Egypt","Iran","Iraq","Israel",
 
 Here I am cleaning the data to only include variables of interest. I included freedom of expression because I think it is interesting to see whether a nation censors protest activity, and if so to what degree (0 = heavily censored, 1 = freedom of expression). I also included the free and fair election variable to highlight the outside factors that may influence election results in a particular nation (0 = fradulent elections, 1 = credible elections).
 
-```{r}
+```{r, include = FALSE}
 library(tidyverse)
 
 vdem_clean <- vdem |>
@@ -86,7 +86,7 @@ The y-axis (anti government) scale is as follows:
 * **Positive numbers mean the country has more anti-system activity than the global historical average.**
 * **Negative numbers mean the country has less anti-system activity than the global historical average.**
 
-```{r}
+```{r, include = FALSE}
 par(mar = c(10, 6, 4, 2)) 
 
 boxplot(v2csantimv ~ country_name,
@@ -103,7 +103,7 @@ mtext("Country Name", side = 1, line = 5)
 
 The graph below shows the distribution of incumbent seats lost in each Middle Eastern and North African Countries in the dataset.
 
-```{r}
+```{r, include = FALSE}
 par(mar = c(8, 10, 4, 2)) 
 
 
@@ -123,7 +123,7 @@ mtext("Country Name", side = 1, line = 5)
 
 Below is a regression to show the correlation between anti-government movements and citizens voting out incumbent leaders.
 
-```{r}
+```{r, include = FALSE}
 library(broom)
 
 fit <- lm(v2ellostss ~ v2csantimv, data = vdem_clean)
@@ -135,7 +135,7 @@ knitr::kable(tidy(fit),
 
 ### Visualizing the regression
 
-```{r}
+```{r, include = FALSE}
 agm_incumbvote_regression <- 
   ggplot(vdem_clean, aes(x = v2csantimv, y = v2ellostss)) +
 geom_point(color = "steelblue1", alpha = 0.5) +
@@ -157,13 +157,15 @@ The visualization reveals a high degree of variance. There is a heavy cluster of
 
 There are several blue "ghost" points in the upper-left and upper-middle quadrants (high seat loss with low-to-moderate protest). These represent instances where incumbents were severely punished at the polls without significant pre-election protest.
 
-In a country with a baseline level of anti-government movements, the model predicts that the **incumbents will lose approximately 18.4% of the seats**. This provides a "baseline." **For every 1-unit increase in prevalence of anti-government movements, the seat loss of incumbents is predicted to decrease by 2.17%**. This is a small negative correlation. As a country's citizens participate in more anti-government movements, incumbents appear to capture more of the total seat share (i.e. losing less seats). The coefficient is statistically significant at the 1% level. Moreover, **I reject the null hypothesis that anti-government protests do not impact voter behavior or the number of incumbent seats lost**.
+In a country with a baseline level of anti-government movements, the model predicts that the **incumbents will lose approximately 18.4% of the seats**. This provides a "baseline." **For every 1-unit increase in prevalence of anti-government movements, the proportion of seat loss by incumbents is predicted to decrease by 2.17 percentage points**. This is a small negative correlation. As a country's citizens participate in more anti-government movements, incumbents appear to capture more of the total seat share (i.e. losing less seats). 
+
+The coefficient is statistically significant at the 1% level with a p-value of 0.01. Moreover, **I reject the null hypothesis that anti-government protests do not impact voter behavior or the number of incumbent seats lost**. The estimate is reasonably precise because the standard error of 0.83 is not huge relative to the coefficient of -2.17. Additionally, the interval doesn't including 0 which aligns well with the small p-value (0.01), suggesting statistical significance.
 
 Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. I **can not assume a causal effect between anti-government protests and incumbent seats lost** in the following election because there are several confounders that could influence both anti-government protests and incumbent seat lost. For example, if a country has a corrupt electoral system (v2elfrfair), citizens may protests in hopes for stronger representation. Yet, this electoral corruption could also be a cause for incumbents keeping their seats, unrelated to the fact that it's being protested. Additionally, freedom of information/open media channels (v2x_freexp_altinf) could give citizens a more accurate understanding of what is going on in their government, necessitating anti-government protests. Access to accurate information could also allow for more fair elections and potential incumbent security. The relationship is also likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.
 
 ## Conclusion
 
-The findings of this analysis provide weak support for the initial hypothesis. While the regression model indicates a small negative correlation—predicting a 2.17% decrease in incumbent seats lost for every unit increase in anti-government movement intensity, the high degree of variance and the heavy clustering of data points around the baseline suggest that protests are an inconsistent predictor of electoral turnover in the MENA region. 
+The findings of this analysis provide weak support for the initial hypothesis. While the regression model indicates a small negative correlation—predicting a 2.17 percentage point decrease in incumbent seats lost for every unit increase in anti-government movement intensity, the high degree of variance and the heavy clustering of data points around the baseline suggest that protests are an inconsistent predictor of electoral turnover in the MENA region. 
 
 Furthermore, the negative coefficient suggests that higher protest levels might correlate with fewer seats lost, contradicting the expectation that mobilization would facilitate incumbent removal. However, the low levels of incumbent seat loss when there are high levels of anti-government protest is in line with my initial prediction that higher levels of protest may cause societal anxiety and a need for stability and familiarity, thus resulting in voters reelecting incumbents.
 
