@@ -1,7 +1,7 @@
 ---
-title: "PS270 Final Project"
+title: "Analyzing the Impact of Anti-Government Movements on Electoral Results"
 author: "Samantha Dombar"
-description: "Anti-Government Movements & Incumbency Vote Share"
+description: "Middle East and North African Countries"
 output:
   distill::distill_article:
     self_contained: false
@@ -12,9 +12,9 @@ install.packages("distill", repos = "https://cloud.r-project.org")
 library(distill)
 ```
 
-## Project thoughts
+## Initial project thoughts
 
-I am interested in exploring data related to protests or other forms of civic engagement and their electoral impacts. It would be interesting to see whether people's anger at politicians is channeled into both activism and electoral action or is more of a symbolic move. I would like to observe Middle Eastern countries because this region has a history of oppressive regimes and protests regarding them.
+I was interested in exploring data related to protests or other forms of civic engagement and their electoral impacts. I thought it would be interesting to see whether people's anger at politicians is channeled into both activism and electoral action or is more of a symbolic move. I decided to observe Middle Eastern countries because this region has a history of oppressive regimes and protests regarding them.
 
 
 # Data Set & Research Question
@@ -34,9 +34,8 @@ Using data from the Varieties of Democracy Project **(V-DEM)**, I will examine h
 
 I will reject the null hypothesis if the p value is less than 0.05. I will fail to reject the null hypothesis if the p value is greater than 0.05.
 
-## Set-up code
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 devtools::install_github("vdeminstitute/vdemdata")
 library(vdemdata)
 vdem <- vdemdata::vdem
@@ -44,9 +43,9 @@ vdem <- vdemdata::vdem
 
 ## Data Cleaning
 
-I am creating the mena variable to hold all the nations that fall under this region.
+I created a **mena** variable to hold all the nations that fall under the Middle East/North Africa region.
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 mena <- c("Algeria","Bahrain","Egypt","Iran","Iraq","Israel",
           "Jordan","Kuwait","Lebanon","Libya","Morocco",
           "Oman","Qatar","Saudi Arabia","Syria","Tunisia",
@@ -55,9 +54,9 @@ mena <- c("Algeria","Bahrain","Egypt","Iran","Iraq","Israel",
 ```
 
 
-Here I am cleaning the data to only include variables of interest. I included freedom of expression because I think it is interesting to see whether a nation censors protest activity, and if so to what degree (0 = heavily censored, 1 = freedom of expression). I also included the free and fair election variable to highlight the outside factors that may influence election results in a particular nation (0 = fradulent elections, 1 = credible elections).
+I also clean the data to only include variables of interest. I included freedom of expression because I think it is interesting to see whether a nation censors protest activity, and if so to what degree (0 = heavily censored, 1 = freedom of expression). I also included the free and fair election variable to highlight the outside factors that may influence election results in a particular nation (0 = fradulent elections, 1 = credible elections).
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 library(tidyverse)
 
 vdem_clean <- vdem |>
@@ -67,6 +66,7 @@ vdem_clean <- vdem |>
     country_name, country_text_id, year, v2x_freexp_altinf, v2csantimv, v2elfrfair, v2ellostss,)
 
 ```
+
 
 # Study
 
@@ -86,7 +86,7 @@ The y-axis (anti government) scale is as follows:
 * **Positive numbers mean the country has more anti-system activity than the global historical average.**
 * **Negative numbers mean the country has less anti-system activity than the global historical average.**
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 par(mar = c(10, 6, 4, 2)) 
 
 boxplot(v2csantimv ~ country_name,
@@ -103,7 +103,7 @@ mtext("Country Name", side = 1, line = 5)
 
 The graph below shows the distribution of incumbent seats lost in each Middle Eastern and North African Countries in the dataset.
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 par(mar = c(8, 10, 4, 2)) 
 
 
@@ -119,11 +119,12 @@ mtext("Country Name", side = 1, line = 5)
 
 ```
 
+
 # Results
 
 Below is a regression to show the correlation between anti-government movements and citizens voting out incumbent leaders.
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 library(broom)
 
 fit <- lm(v2ellostss ~ v2csantimv, data = vdem_clean)
@@ -135,7 +136,7 @@ knitr::kable(tidy(fit),
 
 ### Visualizing the regression
 
-```{r, include = FALSE}
+```{r, echo = FALSE}
 agm_incumbvote_regression <- 
   ggplot(vdem_clean, aes(x = v2csantimv, y = v2ellostss)) +
 geom_point(color = "steelblue1", alpha = 0.5) +
@@ -148,6 +149,7 @@ title = "Do anti government protests in Middle Eastern or North African Countrie
 
 agm_incumbvote_regression
 ```
+
 
 ### Regression Analysis
 
@@ -163,6 +165,7 @@ The coefficient is statistically significant at the 1% level with a p-value of 0
 
 Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. I **can not assume a causal effect between anti-government protests and incumbent seats lost** in the following election because there are several confounders that could influence both anti-government protests and incumbent seat lost. For example, if a country has a corrupt electoral system (v2elfrfair), citizens may protests in hopes for stronger representation. Yet, this electoral corruption could also be a cause for incumbents keeping their seats, unrelated to the fact that it's being protested. Additionally, freedom of information/open media channels (v2x_freexp_altinf) could give citizens a more accurate understanding of what is going on in their government, necessitating anti-government protests. Access to accurate information could also allow for more fair elections and potential incumbent security. The relationship is also likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.
 
+
 ## Conclusion
 
 The findings of this analysis provide weak support for the initial hypothesis. While the regression model indicates a small negative correlation—predicting a 2.17 percentage point decrease in incumbent seats lost for every unit increase in anti-government movement intensity, the high degree of variance and the heavy clustering of data points around the baseline suggest that protests are an inconsistent predictor of electoral turnover in the MENA region. 
@@ -171,7 +174,7 @@ Furthermore, the negative coefficient suggests that higher protest levels might 
 
 These results are subject to several significant threats to inference, most notably confounding variables such as electoral corruption and media censorship. Additionally, missing data is a concern, as elections in the MENA region are infrequent and V-Dem’s expert-coded protest measures are subject to subjective estimation. If granted more time and resources, I would improve this analysis by implementing a distributed lag model to ensure the protests precede the elections, and I would add interaction terms for "Regime Type" to determine if the effect of protests only becomes statistically significant in more democratic regimes versus monarchies.
 
-# Code Printout (DO NOT EDIT BELOW THIS)
+# Code Printout 
 
 ```{r print-code, ref.label=knitr::all_labels(), echo = TRUE, eval=FALSE}
 
