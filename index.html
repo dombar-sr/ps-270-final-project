@@ -1544,7 +1544,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="initial-project-thoughts">Initial project thoughts</h2>
+<h2 id="introduction">Introduction</h2>
 <p>I was interested in exploring data related to protests or other forms of civic engagement and their electoral impacts. I thought it would be interesting to see whether people’s anger at politicians is channeled into both activism and electoral action or is more of a symbolic move. I decided to observe Middle Eastern countries because this region has a history of oppressive regimes and protests regarding them.</p>
 <h1 id="data-set-research-question">Data Set &amp; Research Question</h1>
 <p>The research question I will be answering using regression analysis is: <strong>Do anti-government protests in Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?</strong></p>
@@ -1573,10 +1573,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 </div>
 <h1 id="study">Study</h1>
-<p><strong>Because I am looking at several countries from 1943-2025, I will complete a cross-sectional design.</strong></p>
+<p><strong>Because I am looking at several countries from 1943-2025, I will complete a time-series panel.</strong></p>
 <h2 id="visualizing-the-data">Visualizing the Data</h2>
-<p>The dependent variable, anti-government protests, is an expert-coded variable. Protest intensity is not something that can be measured through a single survey, instead it relies on human judgement. The independent variable, incumbent seats lost, is an observational variable.</p>
-<h3 id="dependent-variable-graph">Dependent variable graph</h3>
+<p>The independent variable, anti-government protests, is an expert-coded variable. Protest intensity is not something that can be measured through a single survey, instead it relies on human judgement. The dependent variable, incumbent seats lost, is an observational variable.</p>
+<h3 id="independent-variable-graph">Independent variable graph</h3>
 <p>The graph below shows the distribution of anti government movements in Middle Eastern and North African Countries in the data set.</p>
 <p>The y-axis (anti government) scale is as follows:</p>
 <ul>
@@ -1587,7 +1587,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="index_files/figure-html5/unnamed-chunk-5-1.png" alt="" width="624" /></p>
 </div>
-<h3 id="independent-variable-graph">Independent variable graph</h3>
+<h3 id="dependent-variable-graph">Dependent variable graph</h3>
 <p>The graph below shows the distribution of incumbent seats lost in each Middle Eastern and North African Countries in the dataset.</p>
 <div class="layout-chunk" data-layout="l-body">
 <p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" alt="" width="624" /></p>
@@ -1607,14 +1607,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: left;">Y-intercept</td>
 <td style="text-align: right;">18.40</td>
 <td style="text-align: right;">0.82</td>
 <td style="text-align: right;">22.56</td>
 <td style="text-align: right;">0.00</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">v2csantimv</td>
+<td style="text-align: left;">Anti-gov. move.</td>
 <td style="text-align: right;">-2.17</td>
 <td style="text-align: right;">0.83</td>
 <td style="text-align: right;">-2.61</td>
@@ -1629,7 +1629,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 <h3 id="regression-analysis">Regression Analysis</h3>
 <p>The scatter plot above examines the relationship between Anti-Government Movements (x-axis) and Incumbent Seats Lost (y-axis) across MENA countries. Here are my findings and their implications for my research on anti government movements and electoral accountability.</p>
-<p>The visualization reveals a high degree of variance. There is a heavy cluster of data points around the center of the x-axis. This suggests that for most observations, anti-government movement activity remains close to a baseline level, even while incumbent seat losses fluctuate wildly from 0 to 50. The vertical spread of seat loss appears to change across different levels of movement intensity. This suggests that <strong>anti-government movements are an inconsistent predictor of electoral outcomes when analyzed in isolation</strong>.</p>
+<p>The visualization reveals a high degree of variance. The vertical spread of seat loss appears to change across different levels of movement intensity. This suggests that <strong>anti-government movements are an inconsistent predictor of electoral outcomes when analyzed in isolation</strong>.</p>
 <p>There are several blue “ghost” points in the upper-left and upper-middle quadrants (high seat loss with low-to-moderate protest). These represent instances where incumbents were severely punished at the polls without significant pre-election protest.</p>
 <p>In a country with a baseline level of anti-government movements, the model predicts that the <strong>incumbents will lose approximately 18.4% of the seats</strong>. This provides a “baseline.” <strong>For every 1-unit increase in prevalence of anti-government movements, the proportion of seat loss by incumbents is predicted to decrease by 2.17 percentage points</strong>. This is a small negative correlation. As a country’s citizens participate in more anti-government movements, incumbents appear to capture more of the total seat share (i.e. losing less seats).</p>
 <p>The coefficient is statistically significant at the 1% level with a p-value of 0.01. Moreover, <strong>I reject the null hypothesis that anti-government protests do not impact voter behavior or the number of incumbent seats lost</strong>. The estimate is reasonably precise because the standard error of 0.83 is not huge relative to the coefficient of -2.17. Additionally, the interval doesn’t including 0 which aligns well with the small p-value (0.01), suggesting statistical significance.</p>
@@ -1685,10 +1685,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>~</span> <span class='va'>v2csantimv</span>, data <span class='op'>=</span> <span class='va'>vdem_clean</span><span class='op'>)</span></span>
+<span><span class='va'>fit.1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>~</span> <span class='va'>v2csantimv</span>, data <span class='op'>=</span> <span class='va'>vdem_clean</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>, </span>
-<span>             digits <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit.1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y-intercept"</span>, <span class='st'>"Anti-gov. move."</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>             <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span>,</span>
 <span>             col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Variable"</span>, <span class='st'>"Coefficient"</span>, <span class='st'>"Std. Error"</span>, <span class='st'>"Stat. value"</span>, <span class='st'>"P value"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span><span class='va'>agm_incumbvote_regression</span> <span class='op'>&lt;-</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>vdem_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>v2csantimv</span>, y <span class='op'>=</span> <span class='va'>v2ellostss</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>

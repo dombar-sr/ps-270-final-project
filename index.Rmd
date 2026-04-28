@@ -12,7 +12,7 @@ install.packages("distill", repos = "https://cloud.r-project.org")
 library(distill)
 ```
 
-## Initial project thoughts
+## Introduction
 
 I was interested in exploring data related to protests or other forms of civic engagement and their electoral impacts. I thought it would be interesting to see whether people's anger at politicians is channeled into both activism and electoral action or is more of a symbolic move. I decided to observe Middle Eastern countries because this region has a history of oppressive regimes and protests regarding them.
 
@@ -70,13 +70,13 @@ vdem_clean <- vdem |>
 
 # Study
 
-**Because I am looking at several countries from 1943-2025, I will complete a cross-sectional design.**
+**Because I am looking at several countries from 1943-2025, I will complete a time-series panel.**
 
 ## Visualizing the Data
 
-The dependent variable, anti-government protests, is an expert-coded variable. Protest intensity is not something that can be measured through a single survey, instead it relies on human judgement. The independent variable, incumbent seats lost, is an observational variable.
+The independent variable, anti-government protests, is an expert-coded variable. Protest intensity is not something that can be measured through a single survey, instead it relies on human judgement. The dependent variable, incumbent seats lost, is an observational variable.
 
-### Dependent variable graph
+### Independent variable graph
 
 The graph below shows the distribution of anti government movements in Middle Eastern and North African Countries in the data set.
 
@@ -99,7 +99,7 @@ boxplot(v2csantimv ~ country_name,
 mtext("Country Name", side = 1, line = 5)
 
 ```
-### Independent variable graph
+### Dependent variable graph
 
 The graph below shows the distribution of incumbent seats lost in each Middle Eastern and North African Countries in the dataset.
 
@@ -127,10 +127,11 @@ Below is a regression to show the correlation between anti-government movements 
 ```{r, echo = FALSE}
 library(broom)
 
-fit <- lm(v2ellostss ~ v2csantimv, data = vdem_clean)
+fit.1 <- lm(v2ellostss ~ v2csantimv, data = vdem_clean)
 
-knitr::kable(tidy(fit), 
-             digits = 2,
+tidy(fit.1) %>%
+  mutate(term = c("Y-intercept", "Anti-gov. move.")) %>%
+             knitr::kable(digits = 2,
              col.names = c("Variable", "Coefficient", "Std. Error", "Stat. value", "P value"))
 ```
 
@@ -155,7 +156,7 @@ agm_incumbvote_regression
 
 The scatter plot above examines the relationship between Anti-Government Movements (x-axis) and Incumbent Seats Lost (y-axis) across MENA countries. Here are my findings and their implications for my research on anti government movements and electoral accountability.
 
-The visualization reveals a high degree of variance. There is a heavy cluster of data points around the center of the x-axis. This suggests that for most observations, anti-government movement activity remains close to a baseline level, even while incumbent seat losses fluctuate wildly from 0 to 50. The vertical spread of seat loss appears to change across different levels of movement intensity. This suggests that **anti-government movements are an inconsistent predictor of electoral outcomes when analyzed in isolation**.
+The visualization reveals a high degree of variance. The vertical spread of seat loss appears to change across different levels of movement intensity. This suggests that **anti-government movements are an inconsistent predictor of electoral outcomes when analyzed in isolation**.
 
 There are several blue "ghost" points in the upper-left and upper-middle quadrants (high seat loss with low-to-moderate protest). These represent instances where incumbents were severely punished at the polls without significant pre-election protest.
 
