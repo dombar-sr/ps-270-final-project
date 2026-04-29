@@ -1544,7 +1544,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="introduction">Introduction</h2>
+<h1 id="introduction">Introduction</h1>
 <p>I was interested in exploring data related to protests or other forms of civic engagement and their electoral impacts. I thought it would be interesting to see whether people’s anger at politicians is channeled into both activism and electoral action or is more of a symbolic move. I decided to observe Middle Eastern countries because this region has a history of oppressive regimes and protests regarding them.</p>
 <h1 id="data-set-research-question">Data Set &amp; Research Question</h1>
 <p>The research question I will be answering using regression analysis is: <strong>Do anti-government protests in Middle Eastern or North African Countries cause citizens to vote out incumbent leaders?</strong></p>
@@ -1633,7 +1633,122 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>There are several blue “ghost” points in the upper-left and upper-middle quadrants (high seat loss with low-to-moderate protest). These represent instances where incumbents were severely punished at the polls without significant pre-election protest.</p>
 <p>In a country with a baseline level of anti-government movements, the model predicts that the <strong>incumbents will lose approximately 18.4% of the seats</strong>. This provides a “baseline.” <strong>For every 1-unit increase in prevalence of anti-government movements, the proportion of seat loss by incumbents is predicted to decrease by 2.17 percentage points</strong>. This is a small negative correlation. As a country’s citizens participate in more anti-government movements, incumbents appear to capture more of the total seat share (i.e. losing less seats).</p>
 <p>The coefficient is statistically significant at the 1% level with a p-value of 0.01. Moreover, <strong>I reject the null hypothesis that anti-government protests do not impact voter behavior or the number of incumbent seats lost</strong>. The estimate is reasonably precise because the standard error of 0.83 is not huge relative to the coefficient of -2.17. Additionally, the interval doesn’t including 0 which aligns well with the small p-value (0.01), suggesting statistical significance.</p>
-<p>Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. I <strong>can not assume a causal effect between anti-government protests and incumbent seats lost</strong> in the following election because there are several confounders that could influence both anti-government protests and incumbent seat lost. For example, if a country has a corrupt electoral system (v2elfrfair), citizens may protests in hopes for stronger representation. Yet, this electoral corruption could also be a cause for incumbents keeping their seats, unrelated to the fact that it’s being protested. Additionally, freedom of information/open media channels (v2x_freexp_altinf) could give citizens a more accurate understanding of what is going on in their government, necessitating anti-government protests. Access to accurate information could also allow for more fair elections and potential incumbent security. The relationship is also likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.</p>
+<p>Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. I <strong>can not assume a causal effect between anti-government protests and incumbent seats lost</strong> in the following election because there are several confounders that could influence both anti-government protests and incumbent seat lost.</p>
+<h3 id="multi-variable-regression">Multi-variable regression</h3>
+<p><strong>Below, I will complete a regression between anti-government movements and incumbent seats lost with year, country, and both as potential confounders.</strong></p>
+<div class="layout-chunk" data-layout="l-body">
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 16%" />
+<col style="width: 14%" />
+<col style="width: 16%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">Stat. value</th>
+<th style="text-align: right;">P value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Y-intercept</td>
+<td style="text-align: right;">21.87</td>
+<td style="text-align: right;">10.36</td>
+<td style="text-align: right;">2.11</td>
+<td style="text-align: right;">0.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Anti-gov. move. (Year constant)</td>
+<td style="text-align: right;">-2.45</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">-1.84</td>
+<td style="text-align: right;">0.07</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table>
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 15%" />
+<col style="width: 14%" />
+<col style="width: 15%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">Stat. value</th>
+<th style="text-align: right;">P value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Y-intercept</td>
+<td style="text-align: right;">15.57</td>
+<td style="text-align: right;">3.27</td>
+<td style="text-align: right;">4.77</td>
+<td style="text-align: right;">0.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Anti-gov. move. (Country constant)</td>
+<td style="text-align: right;">-1.15</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">-1.29</td>
+<td style="text-align: right;">0.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 49%" />
+<col style="width: 14%" />
+<col style="width: 12%" />
+<col style="width: 14%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Coefficient</th>
+<th style="text-align: right;">Std. Error</th>
+<th style="text-align: right;">Stat. value</th>
+<th style="text-align: right;">P value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Y-intercept</td>
+<td style="text-align: right;">29.23</td>
+<td style="text-align: right;">11.22</td>
+<td style="text-align: right;">2.61</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Anti-gov. move. (Year + country constant)</td>
+<td style="text-align: right;">-2.46</td>
+<td style="text-align: right;">1.68</td>
+<td style="text-align: right;">-1.46</td>
+<td style="text-align: right;">0.15</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="multi-regressionconfounder-analysis">Multi-regression/Confounder Analysis</h3>
+<p>Anti-government movements may not be the only factor influencing the number of incumbent seats lost; specific years could also affect electoral outcomes independently of protest activity. After controlling for year, a one-unit increase in anti-government movement activity is associated with a 2.45-unit decrease in incumbent seats lost. This estimate is similar to the baseline model without year controls (-2.17), suggesting that year is unlikely to be a major confounder in the relationship between anti-government movements and incumbent seats lost.</p>
+<p>I also examined whether this relationship varies across MENA countries. After controlling for country, a one-unit increase in anti-government movement activity is associated with a 1.15-unit decrease in incumbent seats lost. Because this coefficient differs more noticeably from the original estimate of -2.17, country-level differences appear to account for some variation in the relationship.</p>
+<p>Finally, when controlling for both year and country simultaneously, a one-unit increase in anti-government movement activity is associated with a 2.46-unit decrease in incumbent seats lost. Since this coefficient remains close to the original estimate, the results suggest that neither year nor country acts as a strong confounder in the relationship between anti-government movements and incumbent seats lost.</p>
+<p>Besides the variables analyzed above, if a country has a corrupt electoral system (v2elfrfair), citizens may protests in hopes for stronger representation. Yet, this electoral corruption could also be a cause for incumbents keeping their seats, unrelated to the fact that it’s being protested. Additionally, freedom of information/open media channels (v2x_freexp_altinf) could give citizens a more accurate understanding of what is going on in their government, necessitating anti-government protests. Access to accurate information could also allow for more fair elections and potential incumbent security. The relationship is also likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>The findings of this analysis provide weak support for the initial hypothesis. While the regression model indicates a small negative correlation—predicting a 2.17 percentage point decrease in incumbent seats lost for every unit increase in anti-government movement intensity, the high degree of variance and the heavy clustering of data points around the baseline suggest that protests are an inconsistent predictor of electoral turnover in the MENA region.</p>
 <p>Furthermore, the negative coefficient suggests that higher protest levels might correlate with fewer seats lost, contradicting the expectation that mobilization would facilitate incumbent removal. However, the low levels of incumbent seat loss when there are high levels of anti-government protest is in line with my initial prediction that higher levels of protest may cause societal anxiety and a need for stability and familiarity, thus resulting in voters reelecting incumbents.</p>
@@ -1641,8 +1756,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1 id="code-printout">Code Printout</h1>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span>, repos <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org"</span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Packages</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/install.packages.html'>install.packages</a></span><span class='op'>(</span><span class='st'>"distill"</span>, repos <span class='op'>=</span> <span class='st'>"https://cloud.r-project.org"</span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/rstudio/distill'>distill</a></span><span class='op'>)</span></span>
+<span><span class='co'># Data</span></span>
 <span><span class='fu'>devtools</span><span class='fu'>::</span><span class='fu'><a href='https://remotes.r-lib.org/reference/install_github.html'>install_github</a></span><span class='op'>(</span><span class='st'>"vdeminstitute/vdemdata"</span><span class='op'>)</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>vdemdata</span><span class='op'>)</span></span>
 <span><span class='va'>vdem</span> <span class='op'>&lt;-</span> <span class='fu'>vdemdata</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/vdemdata/man/vdem.html'>vdem</a></span></span>
@@ -1651,6 +1768,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>          <span class='st'>"Oman"</span>,<span class='st'>"Qatar"</span>,<span class='st'>"Saudi Arabia"</span>,<span class='st'>"Syria"</span>,<span class='st'>"Tunisia"</span>,</span>
 <span>          <span class='st'>"United Arab Emirates"</span>,<span class='st'>"Yemen"</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'># Data cleaning</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>vdem_clean</span> <span class='op'>&lt;-</span> <span class='va'>vdem</span> <span class='op'>|&gt;</span></span>
@@ -1659,6 +1777,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span></span>
 <span>    <span class='va'>country_name</span>, <span class='va'>country_text_id</span>, <span class='va'>year</span>, <span class='va'>v2x_freexp_altinf</span>, <span class='va'>v2csantimv</span>, <span class='va'>v2elfrfair</span>, <span class='va'>v2ellostss</span>,<span class='op'>)</span></span>
 <span></span>
+<span><span class='co'># Independent variable graph</span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>6</span>, <span class='fl'>4</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> </span>
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></span><span class='op'>(</span><span class='va'>v2csantimv</span> <span class='op'>~</span> <span class='va'>country_name</span>,</span>
@@ -1670,6 +1789,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/mtext.html'>mtext</a></span><span class='op'>(</span><span class='st'>"Country Name"</span>, side <span class='op'>=</span> <span class='fl'>1</span>, line <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'># Dependent variable graph</span></span>
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>mar <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>10</span>, <span class='fl'>4</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span> </span>
 <span></span>
 <span></span>
@@ -1683,14 +1803,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span><span class='fu'><a href='https://rdrr.io/r/graphics/mtext.html'>mtext</a></span><span class='op'>(</span><span class='st'>"Country Name"</span>, side <span class='op'>=</span> <span class='fl'>1</span>, line <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></span>
 <span></span>
 <span></span>
+<span><span class='co'># Main regression</span></span>
 <span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
 <span></span>
 <span><span class='va'>fit.1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>~</span> <span class='va'>v2csantimv</span>, data <span class='op'>=</span> <span class='va'>vdem_clean</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit.1</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y-intercept"</span>, <span class='st'>"Anti-gov. move."</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit.1</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y-intercept"</span>, <span class='st'>"Anti-gov. move."</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>             <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span>,</span>
 <span>             col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Variable"</span>, <span class='st'>"Coefficient"</span>, <span class='st'>"Std. Error"</span>, <span class='st'>"Stat. value"</span>, <span class='st'>"P value"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='co'># Regression plot</span></span>
 <span><span class='va'>agm_incumbvote_regression</span> <span class='op'>&lt;-</span> </span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>vdem_clean</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>v2csantimv</span>, y <span class='op'>=</span> <span class='va'>v2ellostss</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"steelblue1"</span>, alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span></span>
@@ -1701,7 +1823,35 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>title <span class='op'>=</span> <span class='st'>"Do anti government protests in Middle Eastern or North African Countries \n predict whether incumbents will lose more legislative seats?"</span></span>
 <span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_minimal</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>agm_incumbvote_regression</span></span></code></pre>
+<span><span class='va'>agm_incumbvote_regression</span></span>
+<span><span class='co'># Adding year as a factor</span></span>
+<span></span>
+<span><span class='va'>fit.2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>~</span> <span class='va'>v2csantimv</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>year</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>vdem_clean</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit.2</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y-intercept"</span>, <span class='st'>"Anti-gov. move. (Year constant)"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>             <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span>             col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Variable"</span>, <span class='st'>"Coefficient"</span>, <span class='st'>"Std. Error"</span>, <span class='st'>"Stat. value"</span>, <span class='st'>"P value"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='co'># Adding country as a factor</span></span>
+<span></span>
+<span><span class='va'>fit.3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>~</span> <span class='va'>v2csantimv</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>country_name</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>vdem_clean</span><span class='op'>)</span> </span>
+<span></span>
+<span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit.3</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y-intercept"</span>, <span class='st'>"Anti-gov. move. (Country constant)"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>             <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span>             col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Variable"</span>, <span class='st'>"Coefficient"</span>, <span class='st'>"Std. Error"</span>, <span class='st'>"Stat. value"</span>, <span class='st'>"P value"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Adding country and year as a factor</span></span>
+<span></span>
+<span><span class='va'>fit.4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>v2ellostss</span> <span class='op'>~</span> <span class='va'>v2csantimv</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>year</span><span class='op'>)</span> <span class='op'>+</span>  <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>country_name</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>vdem_clean</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://generics.r-lib.org/reference/tidy.html'>tidy</a></span><span class='op'>(</span><span class='va'>fit.4</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>term <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Y-intercept"</span>, <span class='st'>"Anti-gov. move. (Year + country constant)"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>             <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>digits <span class='op'>=</span> <span class='fl'>2</span>,</span>
+<span>             col.names <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Variable"</span>, <span class='st'>"Coefficient"</span>, <span class='st'>"Std. Error"</span>, <span class='st'>"Stat. value"</span>, <span class='st'>"P value"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>

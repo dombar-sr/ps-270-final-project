@@ -8,11 +8,12 @@ output:
 ---
 
 ```{r, include = FALSE}
+# Packages
 install.packages("distill", repos = "https://cloud.r-project.org")
 library(distill)
 ```
 
-## Introduction
+# Introduction
 
 I was interested in exploring data related to protests or other forms of civic engagement and their electoral impacts. I thought it would be interesting to see whether people's anger at politicians is channeled into both activism and electoral action or is more of a symbolic move. I decided to observe Middle Eastern countries because this region has a history of oppressive regimes and protests regarding them.
 
@@ -36,6 +37,7 @@ I will reject the null hypothesis if the p value is less than 0.05. I will fail 
 
 
 ```{r, echo = FALSE}
+# Data
 devtools::install_github("vdeminstitute/vdemdata")
 library(vdemdata)
 vdem <- vdemdata::vdem
@@ -53,10 +55,10 @@ mena <- c("Algeria","Bahrain","Egypt","Iran","Iraq","Israel",
 
 ```
 
-
 I also clean the data to only include variables of interest. I included freedom of expression because I think it is interesting to see whether a nation censors protest activity, and if so to what degree (0 = heavily censored, 1 = freedom of expression). I also included the free and fair election variable to highlight the outside factors that may influence election results in a particular nation (0 = fradulent elections, 1 = credible elections).
 
 ```{r, echo = FALSE}
+# Data cleaning
 library(tidyverse)
 
 vdem_clean <- vdem |>
@@ -87,6 +89,7 @@ The y-axis (anti government) scale is as follows:
 * **Negative numbers mean the country has less anti-system activity than the global historical average.**
 
 ```{r, echo = FALSE}
+# Independent variable graph
 par(mar = c(10, 6, 4, 2)) 
 
 boxplot(v2csantimv ~ country_name,
@@ -104,6 +107,7 @@ mtext("Country Name", side = 1, line = 5)
 The graph below shows the distribution of incumbent seats lost in each Middle Eastern and North African Countries in the dataset.
 
 ```{r, echo = FALSE}
+# Dependent variable graph
 par(mar = c(8, 10, 4, 2)) 
 
 
@@ -125,12 +129,13 @@ mtext("Country Name", side = 1, line = 5)
 Below is a regression to show the correlation between anti-government movements and citizens voting out incumbent leaders.
 
 ```{r, echo = FALSE}
+# Main regression
 library(broom)
 
 fit.1 <- lm(v2ellostss ~ v2csantimv, data = vdem_clean)
 
-tidy(fit.1) %>%
-  mutate(term = c("Y-intercept", "Anti-gov. move.")) %>%
+tidy(fit.1) |>
+  mutate(term = c("Y-intercept", "Anti-gov. move.")) |>
              knitr::kable(digits = 2,
              col.names = c("Variable", "Coefficient", "Std. Error", "Stat. value", "P value"))
 ```
@@ -138,6 +143,7 @@ tidy(fit.1) %>%
 ### Visualizing the regression
 
 ```{r, echo = FALSE}
+# Regression plot
 agm_incumbvote_regression <- 
   ggplot(vdem_clean, aes(x = v2csantimv, y = v2ellostss)) +
 geom_point(color = "steelblue1", alpha = 0.5) +
@@ -164,7 +170,59 @@ In a country with a baseline level of anti-government movements, the model predi
 
 The coefficient is statistically significant at the 1% level with a p-value of 0.01. Moreover, **I reject the null hypothesis that anti-government protests do not impact voter behavior or the number of incumbent seats lost**. The estimate is reasonably precise because the standard error of 0.83 is not huge relative to the coefficient of -2.17. Additionally, the interval doesn't including 0 which aligns well with the small p-value (0.01), suggesting statistical significance.
 
-Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. I **can not assume a causal effect between anti-government protests and incumbent seats lost** in the following election because there are several confounders that could influence both anti-government protests and incumbent seat lost. For example, if a country has a corrupt electoral system (v2elfrfair), citizens may protests in hopes for stronger representation. Yet, this electoral corruption could also be a cause for incumbents keeping their seats, unrelated to the fact that it's being protested. Additionally, freedom of information/open media channels (v2x_freexp_altinf) could give citizens a more accurate understanding of what is going on in their government, necessitating anti-government protests. Access to accurate information could also allow for more fair elections and potential incumbent security. The relationship is also likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.
+Overall, while there is a visual negative correlation, the variance in data suggests that anti-government movements are not a reliable predictor of incumbent defeat in the MENA region. I **can not assume a causal effect between anti-government protests and incumbent seats lost** in the following election because there are several confounders that could influence both anti-government protests and incumbent seat lost. 
+
+### Multi-variable regression
+
+**Below, I will complete a regression between anti-government movements and incumbent seats lost with year, country, and both as potential confounders.**
+
+```{r, echo = FALSE}
+# Adding year as a factor
+
+fit.2 <- lm(v2ellostss ~ v2csantimv + factor(year), data = vdem_clean)
+
+tidy(fit.2) |>
+    slice(1,2) |>
+    mutate(term = c("Y-intercept", "Anti-gov. move. (Year constant)")) |>
+             knitr::kable(digits = 2,
+             col.names = c("Variable", "Coefficient", "Std. Error", "Stat. value", "P value"))
+```
+
+```{r, echo = FALSE}
+# Adding country as a factor
+
+fit.3 <- lm(v2ellostss ~ v2csantimv + factor(country_name), data = vdem_clean) 
+
+tidy(fit.3) |>
+    slice(1,2) |>
+    mutate(term = c("Y-intercept", "Anti-gov. move. (Country constant)")) |>
+             knitr::kable(digits = 2,
+             col.names = c("Variable", "Coefficient", "Std. Error", "Stat. value", "P value"))
+
+```
+
+```{r, echo = FALSE}
+# Adding country and year as a factor
+
+fit.4 <- lm(v2ellostss ~ v2csantimv + factor(year) +  factor(country_name), data = vdem_clean)
+
+tidy(fit.4) |>
+    slice(1,2) |>
+    mutate(term = c("Y-intercept", "Anti-gov. move. (Year + country constant)")) |>
+             knitr::kable(digits = 2,
+             col.names = c("Variable", "Coefficient", "Std. Error", "Stat. value", "P value"))
+
+```
+
+### Multi-regression/Confounder Analysis
+
+Anti-government movements may not be the only factor influencing the number of incumbent seats lost; specific years could also affect electoral outcomes independently of protest activity. After controlling for year, a one-unit increase in anti-government movement activity is associated with a 2.45-unit decrease in incumbent seats lost. This estimate is similar to the baseline model without year controls (-2.17), suggesting that year is unlikely to be a major confounder in the relationship between anti-government movements and incumbent seats lost.
+
+I also examined whether this relationship varies across MENA countries. After controlling for country, a one-unit increase in anti-government movement activity is associated with a 1.15-unit decrease in incumbent seats lost. Because this coefficient differs more noticeably from the original estimate of -2.17, country-level differences appear to account for some variation in the relationship.
+
+Finally, when controlling for both year and country simultaneously, a one-unit increase in anti-government movement activity is associated with a 2.46-unit decrease in incumbent seats lost. Since this coefficient remains close to the original estimate, the results suggest that neither year nor country acts as a strong confounder in the relationship between anti-government movements and incumbent seats lost.
+
+Besides the variables analyzed above, if a country has a corrupt electoral system (v2elfrfair), citizens may protests in hopes for stronger representation. Yet, this electoral corruption could also be a cause for incumbents keeping their seats, unrelated to the fact that it's being protested. Additionally, freedom of information/open media channels (v2x_freexp_altinf) could give citizens a more accurate understanding of what is going on in their government, necessitating anti-government protests. Access to accurate information could also allow for more fair elections and potential incumbent security. The relationship is also likely moderated by the regime type and the specific pressures of protest, necessitating a multi-variable regression model to isolate the true causal effect.
 
 
 ## Conclusion
